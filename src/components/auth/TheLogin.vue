@@ -4,30 +4,34 @@
 <div class="row" style="margin-top:20px">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 		<form role="form">
-			<fieldset>
 				<h2>Please Sign In</h2>
 				<hr class="colorgraph">
 				<div class="form-group">
-                    <input v-model="login.email" type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address">
+                    <input v-model="login.email" class="form-control input-lg" placeholder="Email Address">
 				</div>
 				<div class="form-group">
-                    <input v-model="login.password" type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+                    <input v-model="login.password" class="form-control input-lg" placeholder="Password">
 				</div>
 				<span class="button-checkbox">
 					<button type="button" class="btn" data-color="info">Remember Me</button>
-                    <input type="checkbox" name="remember_me" id="remember_me" checked="checked" class="hidden">
+                    <input type="checkbox"  class="hidden">
 					<a href="" class="btn btn-link pull-right">Forgot Password?</a>
 				</span>
 				<hr class="colorgraph">
 				<div class="row">
 					<div class="col-xs-6 col-sm-6 col-md-6">
-                        <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In">
+                        <button 
+                        @click.prevent="loginUser"
+                        type="submit"
+                        class="btn btn-lg btn-success btn-block">
+                                Sign in
+                        </button>
+                           
 					</div>
 					<div class="col-xs-6 col-sm-6 col-md-6">
 						<a href="" class="btn btn-lg btn-primary btn-block">Register</a>
 					</div>
 				</div>
-			</fieldset>
             <pre>{{login}}</pre>
 		</form>
 	</div>
@@ -39,7 +43,7 @@
 
 
 <script >
-
+import swal from 'sweetalert'
 export default{
     name:'TheLogin',
     data() {
@@ -49,6 +53,29 @@ export default{
                 password:''
             }
         }
+    },
+
+    methods:{
+        async loginUser(){
+
+            try {
+                let response = await this.$http.post('/api/auth/signin', this.login)    
+                 console.log(response.data)
+                let token = response.data;
+                let user = response.data.user;
+
+                localStorage.setItem('jwt',token);
+                localStorage.setItem('user', JSON.stringify(user));
+                if (token){
+                    swal("Éxitoo!!","Acceso permitido","success")
+                    this.$router.push('/home')
+                }
+            } 
+            catch(e){
+                swal("Denegado","No se puede obtener acceso","error")
+            }
+        }
+
     }
 }
 </script>
