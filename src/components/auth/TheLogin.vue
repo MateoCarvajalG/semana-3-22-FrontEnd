@@ -8,10 +8,10 @@
 				<h2>Please Sign In</h2>
 				<hr class="colorgraph">
 				<div class="form-group">
-                    <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address">
+                    <input v-model="login.email" type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address">
 				</div>
 				<div class="form-group">
-                    <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+                    <input v-model="login.password" type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
 				</div>
 				<span class="button-checkbox">
 					<button type="button" class="btn" data-color="info">Remember Me</button>
@@ -28,11 +28,13 @@
 					</div>
 				</div>
 			</fieldset>
+            <pre>{{login}}</pre>
 		</form>
 	</div>
+    
+</div>
 </div>
 
-</div>
 </template>
 
 
@@ -42,7 +44,10 @@ export default{
     name:'TheLogin',
     data() {
         return{
-
+            login:{
+                email:'',
+                password:''
+            }
         }
     }
 }
